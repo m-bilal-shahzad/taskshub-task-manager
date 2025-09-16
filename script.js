@@ -1,4 +1,3 @@
-console.log("Todo Manager");
 // ---- CONSTANTS / DOM REFERENCES ----
 // Keys for Local Storage
 const KEYS = {
