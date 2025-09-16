@@ -1,0 +1,795 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap");
+
+/* Global Resets & Defaults */
+:root {
+  --bg-light: #f4f4f4;
+  --bg-dark: #ebebeb;
+  --text-dark: #444;
+  --text-light: #7c7c7c;
+  --border-color: #f5f5f5;
+  --radius-div: 10px;
+  --radius-btn: 5px;
+  --gap-s: 0.625rem;
+  --gap-m: 1rem;
+  --gap-l: 1.875rem;
+  --shadow: 4px 6px 7px 0px #7c7c7c;
+  --transition: all 0.5s linear;
+  --tranistion-filter: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-family: "Lexend Deca", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-light) var(--text-dark);
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: var(--font-family);
+}
+
+/* Task Manager Section */
+.task-manager {
+  height: 100%;
+  background: white;
+  padding: 1.5rem 1.25rem;
+  position: relative;
+}
+
+/* Info Message Div (appears for alerts) */
+.info-div {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: var(--bg-dark);
+  padding: var(--spacing-m);
+  border-radius: var(--radius-div);
+  display: none;
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+}
+
+/* Main Container: Grid Layout (Sidebar + Tasks) */
+.task-main-container {
+  display: grid;
+  grid-template-columns: 0.4fr 2fr;
+  gap: var(--gap-l);
+  height: 100%;
+}
+
+/* SideBar - Left Container */
+.left-container {
+  position: relative;
+}
+
+/* .hamburger-toggle {
+  position: absolute;
+  top: 1.3125rem;
+  right: 50%;
+  transform: translateX(50%);
+  display: none;
+} */
+
+/* Task Menu Container (Sidebar Content) */
+.task-menu-container {
+  background: var(--bg-light);
+  border-radius: var(--radius-div);
+  padding: 1.125rem 0.9375rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-m);
+  transition: var(--transition);
+}
+
+/* Task Heading (Title + Hamburger) */
+.task-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-heading h2 {
+  color: var(--text-dark);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Hamburger Icon */
+.hamburger-icon {
+  position: relative;
+}
+
+.hamburger-icon span {
+  color: var(--text-dark);
+  font-size: 1.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+/*  Close (X) Button inside Sidebar*/
+.hamburger-toggle span {
+  color: var(--text-dark);
+  font-size: 1.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: none;
+  transition: var(--transition);
+}
+
+/* Sidebar Animation (Hamburger Open/Close) */
+.task-menu-container.hamburger-change {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(0);
+  z-index: 9;
+}
+
+.task-menu-container.hamburger-reset {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  transform: translateX(-120%);
+  transition: var(--transition);
+}
+
+/* Search Bar */
+.search-container {
+  position: relative;
+  width: 100%;
+}
+
+.search-container .search-input {
+  color: var(--text-dark);
+  padding: 1.125rem 1rem;
+  width: 100%;
+  height: 2rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-div);
+  outline: none;
+  font-family: inherit;
+}
+
+.search-container .search-btn {
+  position: absolute;
+  top: 50%;
+  right: 2%;
+  transform: translateY(-50%);
+  font-size: 1.125rem;
+  color: var(--text-dark);
+  padding: 0.375rem 0.625rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.search-container .search-btn:hover {
+  background-color: var(--bg-light);
+  border-radius: var(--radius-div);
+  scale: 1.01;
+  transition: var(--transition);
+}
+
+/* Section Headings (Tasks / Tags) */
+.left-heading {
+  color: var(--text-dark);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 0.625rem;
+}
+
+/* Task & Tag Lists (Dropdown Style) */
+.tasks-list,
+.tags-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-s);
+  padding: 0 0.5rem;
+}
+
+.tags-list {
+  max-height: 11.25rem;
+  overflow: auto;
+}
+
+/* Task Filter Items + Tag Items  */
+.task-filter,
+.tag-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--gap-s);
+  padding: 0.625rem 0.5rem;
+  list-style: none;
+  border-radius: var(--radius-div);
+  cursor: pointer;
+  background: #fff;
+}
+
+.tag-item {
+  justify-content: space-between;
+  padding: 0.375rem;
+}
+
+/* Text inside Tasks/Tags  */
+.task-filter .task-icon,
+.task-heading,
+.tag-name {
+  font-size: 0.875rem;
+  color: var(--text-dark);
+  font-weight: 400;
+  text-transform: capitalize;
+}
+
+/* Tag Colored Box (before Tag Name) */
+.tag-box {
+  display: block;
+  height: 0.9375rem;
+  width: 0.9375rem;
+  border-radius: var(--radius-btn);
+}
+
+/* Hover effect for Tasks/Tags */
+.task-filter:hover,
+.tag-item:hover {
+  background: var(--bg-dark);
+  transform: scale(1.01);
+  transition: var(--transition);
+}
+
+/* Tags Name Container (List + Input Toggle) */
+.tags-name-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-s);
+}
+
+/* Buttons: Add / Show list / Update */
+.add-tag-btn,
+.show-tag-list-btn,
+.update-input-tag {
+  position: relative;
+  width: 60px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  background: var(--bg-dark);
+  border: none;
+  border-radius: var(--radius-btn);
+  padding: 0.315rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  span {
+    font-size: 0.875rem;
+  }
+}
+
+/* Tooltip for Tag Buttons */
+.tags-tooltip {
+  position: absolute;
+  top: 1.875rem;
+  right: -20%;
+  transform: translateX(-5px);
+  background-color: var(--text-dark);
+  color: var(--bg-dark);
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: var(--radius-btn);
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition);
+}
+
+/* Show Tooltip on Hover */
+:is(.add-tag-btn, .show-tag-list-btn, .update-input-tag):hover .tags-tooltip {
+  opacity: 1;
+  transition: var(--transition);
+}
+
+/* Tag Box + Name Row */
+.tag-box-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-s);
+}
+
+/* Tag Input (Create New Tag) */
+.tag-input-container {
+  position: relative;
+  display: none;
+  margin-top: 1.125rem;
+  transition: var(--transition);
+}
+
+.toggle-input-container {
+  display: block;
+}
+
+.tag-input {
+  border: none;
+  border-radius: var(--radius-btn);
+  outline: none;
+  width: 100%;
+  height: 30px;
+  padding: 0.625rem;
+  text-transform: capitalize;
+}
+
+/* Send Tag Button (Add Tag in Tags List) */
+.send-tag-list-btn {
+  position: absolute;
+  top: 0.125rem;
+  right: 0.25rem;
+  transform: translateY(10%);
+  display: flex;
+  align-items: center;
+  background: var(--bg-dark);
+  border: none;
+  padding: 0.375rem;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transform: scale(0);
+  opacity: 0;
+  transition: var(--transition);
+
+  span {
+    background: none;
+    font-size: 0.875rem;
+  }
+}
+
+/* Show Tag Button when Input is Focused */
+.tag-input:focus-visible + .send-tag-list-btn {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+.send-tag-list-btn:hover {
+  transition: var(--transition);
+  scale: 1.1;
+}
+
+/* Delete Tag Button */
+.del-tag-btn span {
+  font-size: 1.25rem;
+  padding: 0.25rem 0.375rem;
+  border-radius: var(--radius-btn);
+}
+
+.del-tag-btn:hover {
+  background-color: var(--bg-light);
+  scale: 1.1;
+  transition: var(--transition);
+}
+
+/* Right Container (Main Task Area) */
+.tasks-container {
+  height: 100%;
+}
+
+/* Section for Creating a New Task */
+.create-new-task {
+  margin-bottom: 1.25rem;
+}
+
+/* Add New Task */
+.task-heading-right {
+  color: #212529;
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 3.5rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Wrapper for Right Top Section (Heading + Button + Filters) */
+.right-upper {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-l);
+}
+
+/* Add New Task Btn */
+.add-new-task-btn {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: var(--gap-s);
+  width: 40%;
+  height: 2.5rem;
+  background: transparent;
+  color: var(--text-light);
+  outline: none;
+  border: 0.125rem solid var(--border-color);
+  border-radius: var(--radius-div);
+  padding: 0px 1.25rem;
+  cursor: pointer;
+  font-family: inherit;
+
+  span {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}
+
+/* Filter Section */
+.filter-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-l);
+}
+
+/* Filter Dropdown Container */
+.filter-container {
+  position: relative;
+  width: 6.875rem;
+}
+
+/* Filter Name Box */
+.filter-name {
+  position: relative;
+  padding: 0.625rem 0.5rem;
+  color: var(--text-dark);
+  background: var(--bg-dark);
+  cursor: pointer;
+  border-radius: var(--radius-btn);
+  text-transform: capitalize;
+}
+
+/* Dropdown Menu for Filter Options */
+.filter-options {
+  background-color: #d9d9d9;
+  padding: 8px 10px;
+  border-radius: var(--radius-btn);
+  width: 6.875rem;
+  position: absolute;
+  top: 2.5rem;
+  list-style: none;
+  display: none;
+  flex-direction: column;
+  gap: var(--gap-s);
+  pointer-events: auto;
+  transform: translateY(1.25rem) scale(0.95);
+  transition: var(--tranistion-filter);
+}
+
+.filter-dropdown {
+  display: flex;
+  transform: translateY(0) scale(1);
+  transition: var(--tranistion-filter);
+}
+
+.filter-option {
+  padding: 0.375rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: var(--radius-btn);
+  font-weight: 600;
+  color: #5e5e5e;
+  background: var(--bg-dark);
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.arrow-down {
+  position: absolute;
+  top: 0.4375rem;
+  left: 5.125rem;
+  color: var(--text-dark);
+}
+
+/* Task User Input */
+.task-input-container {
+  background: var(--bg-light);
+  padding: 1.25rem 1.125rem;
+  border-radius: var(--radius-div);
+  display: none;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--gap-m);
+  width: 40%;
+  margin-top: 15px;
+  overflow: auto;
+  max-height: 22.1875rem;
+  box-shadow: var(--shadow);
+}
+
+.task-input-container h2 {
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.task-input-container .task-title {
+  color: var(--text-dark);
+  padding: 1.125rem 1rem;
+  width: 100%;
+  height: 2rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-btn);
+  outline: none;
+  font-family: inherit;
+  box-shadow: var(--shadow);
+}
+
+/* Tags Container */
+.tags-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-m);
+  position: relative;
+}
+
+/* Tags Upper */
+.tags-upper {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-s);
+}
+
+/* Selected Tags */
+.selected-tags {
+  display: none;
+  background: var(--bg-dark);
+  padding: 0.25rem 0.375rem;
+  border-radius: var(--radius-btn);
+  font-size: 0.75rem;
+}
+
+/* Tags Details List */
+.tags-details-list {
+  display: none;
+  flex-direction: column;
+  gap: var(--gap-s);
+  list-style: none;
+
+  span {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+}
+
+/* Tag Name Input */
+.tag-name-input {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: var(--gap-s);
+  font-size: 0.75rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: var(--radius-btn);
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.tag-name-input:hover {
+  color: var(--text-light);
+}
+
+/* Update Input Tag */
+.update-input-tag {
+  display: none;
+}
+
+/* Task Date */
+.task-date {
+  font-size: 0.875rem;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  padding: 0.375rem 0.5rem;
+  border: none;
+  outline: none;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+}
+
+/* Action Btns Input */
+.action-btns-input {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: var(--gap-m);
+}
+
+/* Add Task Btn And Cancel Task Btn */
+.add-task-btn,
+.cancel-task-btn {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  background: var(--bg-dark);
+  border: none;
+  border-radius: var(--radius-btn);
+  padding: 0.3125rem 1.25rem;
+  cursor: pointer;
+}
+
+.add-task-btn:hover,
+.cancel-task-btn:hover {
+  scale: 1.05;
+  transition: var(--transition);
+}
+
+/* Task List */
+.tasks-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-m);
+  max-height: 22.9375rem;
+  overflow: auto;
+}
+
+/* Task Details */
+.task-details {
+  display: flex;
+  gap: var(--gap-m);
+  align-items: start;
+  padding: 0.75rem 1rem;
+  border-bottom: 1.5px solid var(--bg-dark);
+}
+
+/* Task Checkbox */
+.task-checkbox {
+  margin-top: 0.25rem;
+}
+
+/* Task Container */
+.task-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Task Content */
+.task-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-s);
+}
+
+/* Task Name */
+.task-name {
+  font-size: 1rem;
+  color: var(--text-dark);
+  font-weight: 400;
+  text-transform: capitalize;
+}
+
+/* Task Extra */
+.task-extra {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-m);
+
+  span {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  h5 {
+    font-size: 0.75rem;
+    color: var(--text-dark);
+    font-weight: 500;
+  }
+
+  .task-tag-date {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-s);
+  }
+}
+
+/* Action Btns */
+.action-btns {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-m);
+}
+
+/* Action Btn */
+.action-btn {
+  background: var(--bg-dark);
+  border: none;
+  border-radius: var(--radius-btn);
+  padding: 0.25rem 0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  span {
+    font-size: 1.25rem;
+    color: var(--text-dark);
+  }
+
+  &:hover {
+    scale: 1.1;
+    transition: var(--transition);
+  }
+}
+
+/* Task Completed */
+.task-completed {
+  text-decoration: line-through;
+}
+
+/* Task Details Dragging */
+.task-details.dragging {
+  opacity: 0.5;
+}
+
+/* Task Details Drop Target */
+.task-details.drop-target {
+  outline: 2px dashed rgba(0, 0, 0, 0.15);
+  transform: translateY(0.5rem);
+}
+
+/* Task Search */
+.task-search {
+  border: 2px dotted #212529;
+}
+
+/* Media Queries for Responsiveness */
+/* Max Width: 786px (For Laptops) */
+@media (max-width: 786px) {
+  .task-main-container {
+    gap: var(--gap-m);
+  }
+  .task-input-container {
+    width: 15.625rem;
+  }
+}
+
+/* Max Width: 600px (For Tabs) */
+@media (max-width: 600px) {
+  .task-input-container {
+    width: 12.5rem;
+  }
+}
+
+/* Max Width: 490px (For Mobile) */
+@media (max-width: 490px) {
+  .add-new-task-btn {
+    width: 80%;
+  }
+  .right-upper {
+    flex-direction: column;
+  }
+
+  .task-container {
+    flex-direction: column;
+    gap: var(--gap-m);
+    align-items: start;
+  }
+
+  .task-details {
+    padding: 0.625rem 0rem;
+  }
+
+  .tasks-list-container {
+    max-height: 25.625rem;
+  }
+}
