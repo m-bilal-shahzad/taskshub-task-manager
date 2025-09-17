@@ -511,7 +511,6 @@ const filterByStatus = (e) => {
   if (e.target.innerText === "Completed") {
     filteredTasks = taskList.filter((t) => t.isCompleted === true);
     renderTasks(filteredTasks);
-    console.log(taskList);
   }
 };
 
