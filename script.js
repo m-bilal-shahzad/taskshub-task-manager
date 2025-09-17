@@ -31,7 +31,7 @@ const taskDate = document.querySelector(".task-date");
 // Getting Today Date
 const today = new Date().toISOString().split("T")[0];
 // Setting Today as Min So Previous Dates Can't Accessible
-taskDate.setAttribute("min", today);
+// taskDate.setAttribute("min", today);
 
 // Add Task Button after Getting Details from User in Input Container
 const addTask = document.querySelector(".add-task-btn");
@@ -170,6 +170,9 @@ const retriveData = () => {
 
   // On Content Load Enable or Disable Mobile View
   checkViewPort();
+
+  // Check if Task Due Date become Older than Current Date
+  checkExpiredTasks();
 };
 
 // ----   CORE FUNCTIONS ----
@@ -700,6 +703,22 @@ const onDrop = (e) => {
 const onDragEnd = (e) => {
   e.currentTarget.classList.remove("dragging");
   draggedTaskId = null;
+};
+
+// --Delete Task above Due Date--
+// Check if any Task Due Date is Expired
+const checkExpiredTasks = () => {
+  taskList = taskList.filter((task) => {
+    if (task.DueDate && task.DueDate < today) {
+      const expiredTaskEl = document.querySelector(`[data-id="${task.Id}"]`);
+      expiredTaskEl ? expiredTaskEl.remove() : "";
+      return false;
+    }
+    return true;
+  });
+
+  saveInLocalStorage(taskList, KEYS.TASKS);
+  renderTasks(taskList);
 };
 
 // ----   EVENT LISTENERS ----

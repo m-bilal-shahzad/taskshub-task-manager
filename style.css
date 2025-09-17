@@ -70,14 +70,6 @@ body {
   position: relative;
 }
 
-/* .hamburger-toggle {
-  position: absolute;
-  top: 1.3125rem;
-  right: 50%;
-  transform: translateX(50%);
-  display: none;
-} */
-
 /* Task Menu Container (Sidebar Content) */
 .task-menu-container {
   background: var(--bg-light);
