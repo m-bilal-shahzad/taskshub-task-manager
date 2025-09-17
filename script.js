@@ -31,7 +31,7 @@ const taskDate = document.querySelector(".task-date");
 // Getting Today Date
 const today = new Date().toISOString().split("T")[0];
 // Setting Today as Min So Previous Dates Can't Accessible
-// taskDate.setAttribute("min", today);
+taskDate.setAttribute("min", today);
 
 // Add Task Button after Getting Details from User in Input Container
 const addTask = document.querySelector(".add-task-btn");
